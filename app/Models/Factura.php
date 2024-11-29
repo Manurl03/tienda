@@ -11,7 +11,8 @@ class Factura extends Model
     use HasFactory;
 
     protected $fillable = [
-        'fecha',
+        'numero',
+        'user_id',
     ];
 
     protected static function boot()

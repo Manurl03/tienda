@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\ArticuloController;
+use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,5 +20,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('articulos', ArticuloController::class);
+Route::resource('facturas', FacturaController::class);
 
 require __DIR__.'/auth.php';
