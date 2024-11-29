@@ -9,4 +9,23 @@ class Factura extends Model
 {
     /** @use HasFactory<\Database\Factories\FacturaFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'fecha',
+    ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+
+        static::creating(function ($model) {
+            $model->fecha = now();
+        });
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

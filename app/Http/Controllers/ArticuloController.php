@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Articulo;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ArticuloController extends Controller
 {
@@ -12,7 +13,9 @@ class ArticuloController extends Controller
      */
     public function index()
     {
-        //
+        return view('articulos.index', [
+            'articulos' => Articulo::all(),
+        ]);
     }
 
     /**
@@ -20,7 +23,7 @@ class ArticuloController extends Controller
      */
     public function create()
     {
-        //
+        return view('articulos.create');
     }
 
     /**
@@ -28,7 +31,14 @@ class ArticuloController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'codigo' => 'required|max:2|unique:articulos,codigo',
+            'denominacion' => 'required|string|max:255',
+            'precio' => 'required|numeric|between:0,9999.99',
+        ]);
+        $articulo = Articulo::create($validated);
+        session()->flash('exito', 'Articulo creado correctamente.');
+        return redirect()->route('articulos.show', $articulo);
     }
 
     /**
@@ -36,7 +46,9 @@ class ArticuloController extends Controller
      */
     public function show(Articulo $articulo)
     {
-        //
+        return view('articulos.show', [
+            'articulo' => $articulo,
+        ]);
     }
 
     /**
@@ -44,7 +56,9 @@ class ArticuloController extends Controller
      */
     public function edit(Articulo $articulo)
     {
-        //
+        return view('articulos.edit', [
+            'articulo' => $articulo,
+        ]);
     }
 
     /**
@@ -52,7 +66,19 @@ class ArticuloController extends Controller
      */
     public function update(Request $request, Articulo $articulo)
     {
-        //
+        $validated = $request->validate([
+            'codigo' => [
+                'required',
+                'max:2',
+                Rule::unique('articulos')->ignore($articulo),
+            ],
+            'denominacion' => 'required|string|max:255',
+            'precio' => 'required|numeric|between:0,9999.99',
+        ]);
+        $articulo->fill($validated);
+        $articulo->save();
+        session()->flash('exito', 'Articulo modificado correctamente.');
+        return redirect()->route('articulos.index');
     }
 
     /**
@@ -60,6 +86,7 @@ class ArticuloController extends Controller
      */
     public function destroy(Articulo $articulo)
     {
-        //
+        $articulo->delete();
+        return redirect()->route('articulos.index');
     }
 }
