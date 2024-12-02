@@ -1,7 +1,10 @@
 <?php
+
+use App\Generico\Carrito;
 use App\Http\Controllers\ArticuloController;
 use App\Http\Controllers\FacturaController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Articulo;
 use Illuminate\Support\Facades\Route;
 
 
@@ -21,5 +24,13 @@ Route::middleware('auth')->group(function () {
 
 Route::resource('articulos', ArticuloController::class);
 Route::resource('facturas', FacturaController::class);
+Route::resource('articulos', ArticuloController::class);
+
+Route::get('/carrito/meter/{articulo}', function(Articulo $articulo) {
+    $carrito = Carrito::carrito();
+    $carrito->meter($articulo->id);
+    session()->put('carrito', $carrito);
+    return redirect()->route('articulos.index');
+})->name('carrito.meter');
 
 require __DIR__.'/auth.php';

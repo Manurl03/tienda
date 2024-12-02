@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Generico\Carrito;
 use App\Models\Articulo;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
@@ -15,6 +16,7 @@ class ArticuloController extends Controller
     {
         return view('articulos.index', [
             'articulos' => Articulo::all(),
+            'carrito' => Carrito::carrito(),
         ]);
     }
 
