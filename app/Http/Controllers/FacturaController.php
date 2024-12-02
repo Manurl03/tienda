@@ -6,6 +6,7 @@ use App\Models\Factura;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class FacturaController extends Controller
 {
@@ -24,8 +25,7 @@ class FacturaController extends Controller
      */
     public function create()
     {
-        $users = User::all(); 
-        return view('facturas.create', compact('users'));
+        return view('facturas.create');
     }
 
     /**
@@ -33,12 +33,17 @@ class FacturaController extends Controller
      */
     public function store(Request $request)
     {
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         $validated = $request->validate([
             'numero' => 'required|max:4|unique:facturas,numero',
-            'user_id' => 'required|exists:users,id',
         ]);
-        $factura = Factura::create($validated);
-        session()->flash('exito', 'Factura creado correctamente.');
+        $factura = new Factura($validated);
+        $factura->user_id = Auth::id();
+        $factura->save();
+        session()->flash('exito', 'Factura creada correctamente.');
         return redirect()->route('facturas.show', $factura);
     }
 
