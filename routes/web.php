@@ -33,4 +33,11 @@ Route::get('/carrito/meter/{articulo}', function(Articulo $articulo) {
     return redirect()->route('articulos.index');
 })->name('carrito.meter');
 
+Route::get('/carrito/sacar/{articulo}', function(Articulo $articulo) {
+    $carrito = Carrito::carrito();
+    $carrito->sacar($articulo->id);
+    session()->put('carrito', $carrito);
+    return redirect()->route('articulos.index');
+})->name('carrito.sacar');
+
 require __DIR__.'/auth.php';
