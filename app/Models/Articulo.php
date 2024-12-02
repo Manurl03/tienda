@@ -11,4 +11,9 @@ class Articulo extends Model
     use HasFactory;
 
     protected $fillable = ['codigo', 'denominacion', 'precio'];
+
+    public function facturas()
+    {
+        return $this->belongsToMany(Factura::class);    
+    }
 }
