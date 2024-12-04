@@ -12,10 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('articulo_factura', function (Blueprint $table) {
-            $table->id();
             $table->foreignId('articulo_id')->constrained();
             $table->foreignId('factura_id')->constrained();
-            $table->timestamps();
+            $table->integer('cantidad')->default(1);
+            $table->primary(['articulo_id', 'factura_id']);
         });
     }
 

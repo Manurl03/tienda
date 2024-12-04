@@ -4,7 +4,7 @@ namespace App\Generico;
 
 use App\Models\Articulo;
 
-class linea
+class Linea
 {
     private Articulo $articulo;
     private int $cantidad;

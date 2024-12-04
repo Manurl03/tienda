@@ -88,6 +88,7 @@ class ArticuloController extends Controller
      */
     public function destroy(Articulo $articulo)
     {
+        $articulo->facturas()->detach();
         $articulo->delete();
         return redirect()->route('articulos.index');
     }

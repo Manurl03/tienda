@@ -95,6 +95,7 @@ class FacturaController extends Controller
      */
     public function destroy(Factura $factura)
     {
+        $factura->articulos()->detach();
         $factura->delete();
         return redirect()->route('facturas.index');
     }

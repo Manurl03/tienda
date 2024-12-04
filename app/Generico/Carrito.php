@@ -8,9 +8,10 @@ use ValueError;
 class Carrito
 {
     /**
-     * @var Linea[] $linea
+     * @var Linea[] $lineas
      */
     private array $lineas;
+
     public function __construct()
     {
         $this->lineas = [];
@@ -32,13 +33,18 @@ class Carrito
     public function sacar($id)
     {
         if (!isset($this->lineas[$id])) {
-            throw new ValueError('Artículo inexistente en el carrito');
+            throw new ValueError('Artículo inexistente en el carrito.');
         }
 
         $this->lineas[$id]->decrCantidad();
         if ($this->lineas[$id]->getCantidad() == 0) {
             unset($this->lineas[$id]);
         }
+    }
+
+    public function getLineas(): array
+    {
+        return $this->lineas;
     }
 
     public function vacio(): bool
@@ -52,11 +58,9 @@ class Carrito
             session()->put('carrito', new static());
         }
 
-        return session('carrito');
-    }
+        // session('carrito')->meter(1);
+        // session()->forget('carrito');
 
-    public function getLineas()
-    {
-        return $this->lineas;
+        return session('carrito');
     }
 }
